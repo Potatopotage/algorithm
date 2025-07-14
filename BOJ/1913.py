@@ -21,30 +21,32 @@ direction = {
 }
 
 num = N * N
-curr_dir = 0
-curr_r, curr_c = 0, 0
+dr = 0
+r, c = 0, 0
+target_r, target_c = 0, 0
 
+while num > 0:
+    arr[r][c] = num
+    nr, nc = r + direction[dr][0], c + direction[dr][1]
 
-arr[0][0] = num
-num -= 1
+    if num == target:
+        target_r, target_c = r, c
 
-while num >= 1:
-    nr, nc = curr_r + direction[curr_dir][0], curr_c + direction[curr_dir][1]
+    if nr < 0 or nr >= N or nc < 0 or nc >= N or arr[nr][nc] != 0:
+        dr = (dr + 1) % 4
 
-    if 0 <= nr < N and 0 <= nc < N and arr[nr][nc] == 0:
-        arr[nr][nc] = num
-        if num == target:
-            target_r = nr + 1
-            target_c = nc + 1
+    r += direction[dr][0]
+    c += direction[dr][1]
+    num -= 1
 
-        num -= 1
-        curr_r, curr_c = nr, nc
-    else:
-        curr_dir = (curr_dir + 1) % 4
 
 for row in arr:
     print(*row)
-print(target_r, target_c)
+print(target_r + 1, target_c + 1)
+
+
+
+
 
 """
 49 26 27 28 29 30 31

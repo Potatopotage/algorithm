@@ -5,14 +5,17 @@
 
 """
 import sys
-sys.stdin = open('1913.txt', 'r')
+input = sys.stdin.readline
 
+# N 배열 크기 target 목표
 N = int(input())
 target = int(input())
 
+# 숫자를 저장할 배열
 arr = [[0] * N for _ in range(N)]
 
-# 거꾸로 맨 뒤에서부터
+# 이동 순서를 저장한 딕셔너리
+# 아래>>오른쪽>>위>>왼쪽
 direction = {
     0: [1, 0],
     1: [0, 1],
@@ -20,21 +23,34 @@ direction = {
     3: [0, -1],
 }
 
+# 왼쪽 위부터 거꾸로 숫자를 채워넣을 것이기 때문에 N * N 부터 시작
 num = N * N
+
+# 시작 이동방향
 dr = 0
+# 시작 위치
 r, c = 0, 0
+# 목표 지점 위치 초기값 설정
 target_r, target_c = 0, 0
 
+# num이 1이 될 때까지 반복
 while num > 0:
+    # 숫자 넣기
     arr[r][c] = num
-    nr, nc = r + direction[dr][0], c + direction[dr][1]
 
+    # 목표 지점에 도착하면 좌표 저장
     if num == target:
         target_r, target_c = r, c
 
+    # 현재 방향으로 다음 좌표 지정
+    nr, nc = r + direction[dr][0], c + direction[dr][1]
+
+    # 다음 좌표가 배열을 벗어나거나 이미 숫자가 채워져 있는 경우 방향 전환
     if nr < 0 or nr >= N or nc < 0 or nc >= N or arr[nr][nc] != 0:
         dr = (dr + 1) % 4
 
+    # 다음 좌표 설정
+    # nr, nc로 설정하면 안됨!! >> 방향을 전환한 경우 전환한 방향으로 다음 좌표를 계산해야 하기 때문
     r += direction[dr][0]
     c += direction[dr][1]
     num -= 1
@@ -43,9 +59,6 @@ while num > 0:
 for row in arr:
     print(*row)
 print(target_r + 1, target_c + 1)
-
-
-
 
 
 """
